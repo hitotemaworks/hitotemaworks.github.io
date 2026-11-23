@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大掃除チェックリスト｜場所別にやることと順番がわかる【無料・保存できる】</title>
+<meta name="description" content="キッチン・浴室・トイレなど8か所の大掃除リスト。チェックするだけで進み具合がわかり、ブラウザに保存されるので何日かに分けて使えます。印刷もOK。登録不要・無料。">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
+    --line: #dde1e8; --accent: #2f6fde; --accent-text: #ffffff;
+    --done: #1c7c4a; --bar-bg: #e6e9ef; --warn: #b4531a; --input: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1d2128; --text: #e7eaf0; --muted: #a0a8b6;
+      --line: #333944; --accent: #6b9bf0; --accent-text: #0e1420;
+      --done: #5fc48d; --bar-bg: #2b3039; --warn: #f0a46b; --input: #262b33;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.45rem; margin: 8px 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 14px;
+  }
+  @media (min-width: 600px) and (min-height: 700px) {
+    .total { position: sticky; top: 0; z-index: 2; }
+  }
+  .total .num { font-size: 1.3rem; font-weight: 700; }
+  .bar { height: 10px; background: var(--bar-bg); border-radius: 99px; overflow: hidden; margin: 6px 0 2px; }
+  .bar > span { display: block; height: 100%; background: var(--done); width: 0; transition: width .2s; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  .toolbar label { display: inline-flex; align-items: center; gap: 6px; font-size: .95rem; cursor: pointer; }
+  button {
+    font: inherit; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); padding: 6px 12px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .area-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .area-head h2 { font-size: 1.1rem; margin: 0; }
+  .area-head .pct { color: var(--muted); font-size: .9rem; white-space: nowrap; }
+  .area.complete .area-head h2::after { content: " ✓"; color: var(--done); }
+  ul.items { list-style: none; padding: 0; margin: 8px 0 0; }
+  ul.items li { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); }
+  ul.items li:first-child { border-top: 0; }
+  ul.items input[type=checkbox] { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--done); }
+  ul.items label { flex: 1; cursor: pointer; }
+  ul.items li.done label { color: var(--muted); text-decoration: line-through; }
+  .hide-done ul.items li.done { display: none; }
+  .del { border: 0; background: none; color: var(--muted); padding: 0 4px; font-size: 1.1rem; line-height: 1.4; }
+  .add { display: flex; gap: 8px; margin-top: 8px; }
+  .add input {
+    flex: 1; min-width: 0; font: inherit; color: var(--text); background: var(--input);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px;
+  }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .note { color: var(--warn); font-size: .9rem; margin: 6px 0 0; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p, details li { color: var(--muted); }
+  details p { margin: 8px 0 0; }
+  details ul { margin: 8px 0 0; padding-left: 1.2em; }
+  .faq h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+  footer a { color: inherit; }
+
+  @media print {
+    :root { --bg: #fff; --card: #fff; --text: #000; --muted: #333; --line: #bbb; }
+    body { background: #fff; }
+    .toolbar, .add, .del, .faq, footer, .lead, .note { display: none !important; }
+    .total { position: static; }
+    .card { break-inside: avoid; border-color: #bbb; }
+    .hide-done ul.items li.done { display: flex; }
+    main { padding: 0; max-width: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>大掃除チェックリスト</h1>
+  <p class="lead">場所ごとのやることにチェックを入れるだけで、全体の進み具合がわかります。チェックはこのブラウザに保存されるので、何日かに分けて進められます。</p>
+
+  <section class="card total" aria-label="全体の進み具合">
+    <div><span class="num" id="total-pct">0%</span> <span id="total-count"></span></div>
+    <div class="bar" aria-hidden="true"><span id="total-bar"></span></div>
+    <div class="toolbar">
+      <label><input type="checkbox" id="hide-done"> チェック済みを隠す</label>
+      <button type="button" id="print">印刷する</button>
+      <button type="button" id="reset">すべてリセット</button>
+    </div>
+    <p class="note" id="storage-note" hidden>このブラウザでは保存が使えないため、ページを閉じるとチェックが消えます。</p>
+  </section>
+
+  <div id="areas"></div>
+
+  <section class="card faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">使い方・コツ</h2>
+    <details open>
+      <summary>使い方</summary>
+      <p>終わった項目にチェックを入れます。場所ごとと全体の進み具合が自動で変わります。自分の家に合わせて、各場所の下の欄から項目を追加でき、いらない項目は×で消せます。</p>
+    </details>
+    <details>
+      <summary>効率のよい順番は？</summary>
+      <p>ほこりは上から下へ落ちるので、部屋の中では「高い所 → 低い所 → 床」の順に進めると二度手間になりにくくなります。家全体では「奥の部屋から玄関へ」向かって進めると、きれいにした所を通らずに済みます。このリストも、場所の中でおおむね上から下の順に並べています。</p>
+    </details>
+    <details>
+      <summary>安全のために気をつけること</summary>
+      <ul>
+        <li>塩素系の洗剤と酸性タイプの洗剤を混ぜたり、続けて使ったりしない（有毒なガスが出ます）。製品の「まぜるな危険」の表示を確認してください。</li>
+        <li>洗剤を使うときは窓を開けるか換気扇を回し、ゴム手袋をつける。</li>
+        <li>高い所の作業は、安定した脚立を使い、無理に手を伸ばさない。</li>
+      </ul>
+    </details>
+    <details>
+      <summary>チェックはどこに保存されますか？</summary>
+      <p>お使いのブラウザの中だけに保存され、どこにも送信しません。別のスマホやパソコンとは共有されません。ブラウザの履歴やサイトデータを消すと、チェックも消えます。</p>
+    </details>
+  </section>
+
+  <footer><a href="../">ひとてまワークス</a> ・ 登録不要・無料</footer>
+</main>
+
+<script>
+(() => {
+  const KEY = "hitotema-oosouji-v1";
+  const AREAS = [
+    { id: "kitchen", name: "キッチン", items: [
+      "換気扇・レンジフード", "吊り戸棚の中と扉", "コンロ・五徳", "電子レンジ・トースター",
+      "冷蔵庫の中を整理して拭く", "シンクと排水口", "床の油汚れ" ] },
+    { id: "bath", name: "浴室", items: [
+      "天井と換気扇", "壁・ドアのカビ", "鏡の水あか", "蛇口・シャワーヘッド",
+      "浴槽と風呂ふた", "排水口", "床と小物" ] },
+    { id: "toilet", name: "トイレ", items: [
+      "換気扇", "棚・タンクの上", "便座と便器のふち裏", "壁と床", "スリッパ・マットの洗濯" ] },
+    { id: "washroom", name: "洗面所", items: [
+      "照明・換気扇", "鏡と洗面台", "収納の整理", "洗濯機の外側と糸くずフィルター", "排水口と床" ] },
+    { id: "living", name: "リビング", items: [
+      "照明・エアコンのフィルター", "カーテンの洗濯", "棚・テレビまわりのほこり", "ソファ・クッション",
+      "不要な物の仕分け", "床・ラグ" ] },
+    { id: "bedroom", name: "寝室・子ども部屋", items: [
+      "照明・エアコン", "クローゼットの整理", "寝具の洗濯・干す", "ベッドの下", "床" ] },
+    { id: "window", name: "窓・ベランダ", items: [
+      "窓ガラス（内・外）", "網戸", "サッシのレール", "ベランダの床と排水口", "物干し竿" ] },
+    { id: "entrance", name: "玄関", items: [
+      "照明", "靴箱の整理", "ドアの内外とドアノブ", "たたき（床）", "表札・インターホン" ] },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  let storageOk = true;
+  let state = { done: {}, removed: {}, custom: {}, hideDone: false, seq: 0 };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) state = Object.assign(state, JSON.parse(raw));
+    } catch { storageOk = false; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch { storageOk = false; }
+    $("storage-note").hidden = storageOk;
+  }
+
+  function itemsOf(area) {
+    const base = area.items
+      .map((text, i) => ({ id: `${area.id}-${i}`, text, custom: false }))
+      .filter((it) => !state.removed[it.id]);
+    const extra = (state.custom[area.id] || []).map((c) => ({ ...c, custom: true }));
+    return base.concat(extra);
+  }
+
+  function pct(done, all) { return all ? Math.round((done / all) * 100) : 0; }
+
+  function render(focusArea) {
+    const wrap = $("areas");
+    wrap.innerHTML = "";
+    wrap.classList.toggle("hide-done", state.hideDone);
+    let tDone = 0, tAll = 0;
+
+    AREAS.forEach((area) => {
+      const items = itemsOf(area);
+      const done = items.filter((it) => state.done[it.id]).length;
+      tDone += done; tAll += items.length;
+
+      const sec = document.createElement("section");
+      sec.className = "card area" + (items.length && done === items.length ? " complete" : "");
+      sec.setAttribute("aria-labelledby", `h-${area.id}`);
+
+      const head = document.createElement("div");
+      head.className = "area-head";
+      const h2 = document.createElement("h2");
+      h2.id = `h-${area.id}`;
+      h2.textContent = area.name;
+      const p = document.createElement("span");
+      p.className = "pct";
+      p.textContent = `${done} / ${items.length}（${pct(done, items.length)}%）`;
+      head.append(h2, p);
+
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      bar.setAttribute("aria-hidden", "true");
+      const fill = document.createElement("span");
+      fill.style.width = pct(done, items.length) + "%";
+      bar.appendChild(fill);
+
+      const ul = document.createElement("ul");
+      ul.className = "items";
+      items.forEach((it) => {
+        const li = document.createElement("li");
+        if (state.done[it.id]) li.className = "done";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = `c-${it.id}`;
+        cb.checked = !!state.done[it.id];
+        cb.addEventListener("change", () => {
+          if (cb.checked) state.done[it.id] = true; else delete state.done[it.id];
+          save(); render();
+        });
+        const lb = document.createElement("label");
+        lb.htmlFor = cb.id;
+        lb.textContent = it.text;
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "del";
+        del.textContent = "×";
+        del.setAttribute("aria-label", `「${it.text}」を削除`);
+        del.addEventListener("click", () => {
+          if (it.custom) state.custom[area.id] = (state.custom[area.id] || []).filter((c) => c.id !== it.id);
+          else state.removed[it.id] = true;
+          delete state.done[it.id];
+          save(); render();
+        });
+        li.append(cb, lb, del);
+        ul.appendChild(li);
+      });
+
+      const form = document.createElement("form");
+      form.className = "add";
+      const input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = 40;
+      input.placeholder = "項目を追加（例：照明のかさ）";
+      input.setAttribute("aria-label", `${area.name}に項目を追加`);
+      const addBtn = document.createElement("button");
+      addBtn.type = "submit";
+      addBtn.textContent = "追加";
+      form.append(input, addBtn);
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        state.seq += 1;
+        (state.custom[area.id] = state.custom[area.id] || []).push({ id: `${area.id}-c${state.seq}`, text });
+        save(); render(area.id);
+      });
+
+      sec.append(head, bar, ul, form);
+      wrap.appendChild(sec);
+      if (focusArea === area.id) input.focus();
+    });
+
+    const tp = pct(tDone, tAll);
+    $("total-pct").textContent = tp + "%";
+    $("total-count").textContent = `完了 ${tDone} / ${tAll} 項目` + (tAll && tDone === tAll ? "　おつかれさまでした！" : "");
+    $("total-bar").style.width = tp + "%";
+    $("hide-done").checked = !!state.hideDone;
+  }
+
+  $("hide-done").addEventListener("change", (e) => { state.hideDone = e.target.checked; save(); render(); });
+  $("print").addEventListener("click", () => window.print());
+  $("reset").addEventListener("click", () => {
+    if (!confirm("チェック・追加した項目・削除した項目をすべて元に戻します。よろしいですか？")) return;
+    state = { done: {}, removed: {}, custom: {}, hideDone: false, seq: 0 };
+    save(); render();
+  });
+
+  load();
+  $("storage-note").hidden = storageOk;
+  render();
+})();
+</script>
+</body>
+</html>
