@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>傾斜割り勘計算ツール｜飲み会の支払いを上司・後輩で調整【無料】</title>
+<meta name="description" content="合計金額と人数を入れるだけで、多め・普通・少なめの傾斜をつけた割り勘を100円単位で計算。幹事が足す額・余る額もすぐわかる。登録不要・無料。">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
+    --line: #dde1e8; --accent: #2f6fde; --accent-text: #ffffff;
+    --good: #1c7c4a; --warn: #b4531a; --input: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1d2128; --text: #e7eaf0; --muted: #a0a8b6;
+      --line: #333944; --accent: #6b9bf0; --accent-text: #0e1420;
+      --good: #5fc48d; --warn: #f0a46b; --input: #262b33;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    line-height: 1.6;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.45rem; margin: 8px 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px; margin-bottom: 16px;
+  }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  label.field { display: block; margin-bottom: 12px; }
+  label.field span { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 4px; }
+  input, select {
+    font: inherit; color: var(--text); background: var(--input);
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%;
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .groups { width: 100%; border-collapse: collapse; }
+  .groups th { font-size: .8rem; color: var(--muted); text-align: left; font-weight: normal; padding: 0 4px 4px; }
+  .groups td { padding: 4px; vertical-align: middle; }
+  .groups td:nth-child(2), .groups td:nth-child(3) { width: 22%; }
+  .groups td:last-child { width: 40px; text-align: center; }
+  button {
+    font: inherit; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); padding: 8px 12px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  button.del { padding: 6px 10px; color: var(--muted); }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .result-list { list-style: none; padding: 0; margin: 0 0 12px; }
+  .result-list li {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+    padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .result-list .who { color: var(--muted); }
+  .result-list .amt { font-size: 1.35rem; font-weight: 700; white-space: nowrap; }
+  .sum { font-size: .95rem; }
+  .sum p { margin: 4px 0; }
+  .diff-plus { color: var(--good); font-weight: 700; }
+  .diff-minus { color: var(--warn); font-weight: 700; }
+  .notice { color: var(--warn); margin: 0; }
+  .copied { color: var(--good); font-size: .9rem; align-self: center; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin: 8px 0 0; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>傾斜割り勘計算ツール</h1>
+  <p class="lead">合計金額と人数を入れるだけで、「多め・普通・少なめ」の傾斜をつけた1人あたりの金額を計算します。端数の丸めと、幹事が足す額・余る額もわかります。</p>
+
+  <section class="card" aria-labelledby="in-h">
+    <h2 id="in-h">入力</h2>
+    <div class="row2">
+      <label class="field"><span>合計金額（円）</span>
+        <input id="total" type="number" inputmode="numeric" min="0" step="1" value="30000">
+      </label>
+      <label class="field"><span>丸め単位</span>
+        <select id="unit">
+          <option value="1">1円</option>
+          <option value="10">10円</option>
+          <option value="100" selected>100円</option>
+          <option value="500">500円</option>
+          <option value="1000">1000円</option>
+        </select>
+      </label>
+    </div>
+    <label class="field"><span>端数の扱い</span>
+      <select id="mode">
+        <option value="ceil" selected>切り上げ（集めすぎた分は幹事が預かる）</option>
+        <option value="floor">切り捨て（足りない分は幹事が払う）</option>
+      </select>
+    </label>
+
+    <table class="groups" aria-label="区分ごとの倍率と人数">
+      <thead><tr><th>区分</th><th>倍率</th><th>人数</th><th></th></tr></thead>
+      <tbody id="groups"></tbody>
+    </table>
+    <div class="actions">
+      <button type="button" id="add">＋ 区分を追加</button>
+      <button type="button" id="reset">初期値に戻す</button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="out-h" aria-live="polite">
+    <h2 id="out-h">結果</h2>
+    <div id="result"></div>
+    <div class="actions">
+      <button type="button" class="primary" id="copy">結果をコピー</button>
+      <span class="copied" id="copied" hidden>コピーしました</span>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="faq-h">
+    <h2 id="faq-h">使い方・計算方法</h2>
+    <details open>
+      <summary>使い方</summary>
+      <p>合計金額を入れ、区分ごとに倍率と人数を入れます。たとえば上司は1.5倍、普通は1倍、学生や後輩は0.7倍のようにします。入力するとすぐに結果が変わります。区分は追加・削除できます。</p>
+    </details>
+    <details>
+      <summary>どうやって計算していますか？</summary>
+      <p>まず「倍率×人数」をすべて足して、合計金額をその数で割り、倍率1の人の基準額を出します。各区分の金額は「基準額×倍率」を選んだ丸め単位で切り上げ（または切り捨て）したものです。</p>
+    </details>
+    <details>
+      <summary>集めた額が合計とずれるのはなぜ？</summary>
+      <p>100円単位などに丸めるためです。切り上げなら少し多く集まり、その分は幹事が預かるかお釣りにします。切り捨てなら少し足りず、その分を幹事が払います。差額は結果欄に出ます。</p>
+    </details>
+    <details>
+      <summary>入力した内容は保存されますか？</summary>
+      <p>保存も送信もしません。計算はすべてお使いのブラウザの中だけで行います。</p>
+    </details>
+  </section>
+
+  <footer>傾斜割り勘計算ツール・登録不要・無料</footer>
+</main>
+
+<script>
+(() => {
+  const DEFAULT = [
+    { name: "多め", rate: 1.5, count: 2 },
+    { name: "普通", rate: 1, count: 5 },
+    { name: "少なめ", rate: 0.7, count: 3 },
+  ];
+  const $ = (id) => document.getElementById(id);
+  const tbody = $("groups");
+  let lastText = "";
+
+  const yen = (n) => n.toLocaleString("ja-JP") + "円";
+
+  function addRow(g) {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><input type="text" class="g-name" aria-label="区分名" maxlength="12"></td>' +
+      '<td><input type="number" class="g-rate" aria-label="倍率" min="0" step="0.1" inputmode="decimal"></td>' +
+      '<td><input type="number" class="g-count" aria-label="人数" min="0" step="1" inputmode="numeric"></td>' +
+      '<td><button type="button" class="del" aria-label="この区分を削除">×</button></td>';
+    tr.querySelector(".g-name").value = g.name;
+    tr.querySelector(".g-rate").value = g.rate;
+    tr.querySelector(".g-count").value = g.count;
+    tr.querySelector(".del").addEventListener("click", () => {
+      if (tbody.rows.length > 1) { tr.remove(); calc(); }
+    });
+    tbody.appendChild(tr);
+  }
+
+  function reset() {
+    tbody.innerHTML = "";
+    DEFAULT.forEach(addRow);
+    $("total").value = 30000;
+    $("unit").value = "100";
+    $("mode").value = "ceil";
+    calc();
+  }
+
+  function notice(msg) {
+    $("result").innerHTML = "";
+    const p = document.createElement("p");
+    p.className = "notice";
+    p.textContent = msg;
+    $("result").appendChild(p);
+    lastText = "";
+  }
+
+  function calc() {
+    const total = Number($("total").value);
+    const unit = Number($("unit").value);
+    const mode = $("mode").value;
+    const groups = [...tbody.rows].map((tr, i) => ({
+      name: tr.querySelector(".g-name").value.trim() || `区分${i + 1}`,
+      rate: Number(tr.querySelector(".g-rate").value),
+      count: Number(tr.querySelector(".g-count").value),
+    }));
+
+    if (!(total > 0)) return notice("合計金額を1円以上で入れてください。");
+    for (const g of groups) {
+      if (!Number.isFinite(g.rate) || g.rate < 0) return notice(`「${g.name}」の倍率は0以上の数で入れてください。`);
+      if (!Number.isInteger(g.count) || g.count < 0) return notice(`「${g.name}」の人数は0以上の整数で入れてください。`);
+    }
+    const active = groups.filter((g) => g.count > 0);
+    const weight = active.reduce((s, g) => s + g.rate * g.count, 0);
+    if (active.length === 0) return notice("人数を1人以上入れてください。");
+    if (!(weight > 0)) return notice("倍率がすべて0です。どれかの区分の倍率を0より大きくしてください。");
+
+    const base = total / weight;
+    const round = mode === "ceil" ? Math.ceil : Math.floor;
+    const rows = active.map((g) => {
+      const per = round((base * g.rate) / unit) * unit;
+      return { ...g, per, sub: per * g.count };
+    });
+    const people = rows.reduce((s, r) => s + r.count, 0);
+    const collected = rows.reduce((s, r) => s + r.sub, 0);
+    const diff = collected - total;
+
+    const ul = document.createElement("ul");
+    ul.className = "result-list";
+    rows.forEach((r) => {
+      const li = document.createElement("li");
+      const who = document.createElement("span");
+      who.className = "who";
+      who.textContent = `${r.name}（×${r.rate}・${r.count}人）`;
+      const amt = document.createElement("span");
+      amt.className = "amt";
+      amt.textContent = `1人 ${yen(r.per)}`;
+      li.append(who, amt);
+      ul.appendChild(li);
+    });
+
+    const sum = document.createElement("div");
+    sum.className = "sum";
+    let diffHtml;
+    if (diff > 0) diffHtml = `<span class="diff-plus">${yen(diff)} 多く集まります</span>（幹事が預かる・お釣りに）`;
+    else if (diff < 0) diffHtml = `<span class="diff-minus">${yen(-diff)} 足りません</span>（幹事が払う）`;
+    else diffHtml = `<span class="diff-plus">ぴったりです</span>`;
+    sum.innerHTML =
+      `<p>合計 ${yen(total)} ／ ${people}人</p>` +
+      `<p>集める額の合計 ${yen(collected)}</p>` +
+      `<p>差額：${diffHtml}</p>`;
+
+    $("result").innerHTML = "";
+    $("result").append(ul, sum);
+
+    lastText =
+      `【割り勘】合計${yen(total)}・${people}人\n` +
+      rows.map((r) => `${r.name}：1人${yen(r.per)}（${r.count}人）`).join("\n") +
+      (diff > 0 ? `\n※${yen(diff)}多く集まります` : diff < 0 ? `\n※${yen(-diff)}は幹事が払います` : "");
+  }
+
+  async function copy() {
+    if (!lastText) return;
+    try {
+      await navigator.clipboard.writeText(lastText);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = lastText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    const c = $("copied");
+    c.hidden = false;
+    setTimeout(() => { c.hidden = true; }, 1500);
+  }
+
+  document.addEventListener("input", calc);
+  document.addEventListener("change", calc);
+  $("add").addEventListener("click", () => { addRow({ name: "", rate: 1, count: 1 }); calc(); });
+  $("reset").addEventListener("click", reset);
+  $("copy").addEventListener("click", copy);
+  reset();
+})();
+</script>
+</body>
+</html>
