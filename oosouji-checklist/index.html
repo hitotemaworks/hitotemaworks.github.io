@@ -68,6 +68,13 @@
   details.tips li { color: var(--text); font-size: .93rem; margin-bottom: 6px; }
   .sns { margin: 6px 0 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
   .sns a { color: var(--accent); }
+  .shop { margin: 8px 0 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .shop a { color: var(--accent); }
+  .pr {
+    font-size: .7rem; font-weight: 700; border: 1px solid var(--muted); color: var(--muted);
+    border-radius: 4px; padding: 0 4px; line-height: 1.5;
+  }
+  .disclosure { color: var(--muted); font-size: .8rem; margin: -8px 0 16px; }
   details { border-top: 1px solid var(--line); padding: 10px 0; }
   details:first-of-type { border-top: 0; }
   summary { cursor: pointer; font-weight: 600; }
@@ -81,7 +88,7 @@
   @media print {
     :root { --bg: #fff; --card: #fff; --text: #000; --muted: #333; --line: #bbb; }
     body { background: #fff; }
-    .toolbar, .add, .del, .faq, footer, .lead, .note, details.tips { display: none !important; }
+    .toolbar, .add, .del, .faq, footer, .lead, .disclosure, .note, details.tips { display: none !important; }
     .total { position: static; }
     .card { break-inside: avoid; border-color: #bbb; }
     .hide-done ul.items li.done { display: flex; }
@@ -93,6 +100,7 @@
 <main>
   <h1>大掃除チェックリスト</h1>
   <p class="lead">場所ごとのやることにチェックを入れるだけで、全体の進み具合がわかります。チェックはこのブラウザに保存されるので、何日かに分けて進められます。</p>
+  <p class="disclosure">※このページには広告（楽天アフィリエイト）のリンクが含まれます。リンク先で購入されると、運営者に紹介料が支払われることがあります。</p>
 
   <section class="card total" aria-label="全体の進み具合">
     <div><span class="num" id="total-pct">0%</span> <span id="total-count"></span></div>
@@ -178,6 +186,22 @@
       "玄関は家の掃除の最後に。ほかの部屋から出たほこりやごみをまとめて掃き出せます。",
       "靴箱は中身を一度全部出し、扉を開けて乾かしてから戻すと湿気やにおいがこもりにくくなります。" ] },
   ];
+  // 楽天アフィリエイト（楽天市場の検索結果へのリンク。売り切れでリンク切れにならないよう、商品ページではなく検索結果にする）
+  const RAKUTEN_AFF_ID = "59e17ee6.acecc8a1.59e17ee7.58d95c3a";
+  const rakuten = (kw) =>
+    `https://hb.afl.rakuten.co.jp/ichiba/${RAKUTEN_AFF_ID}/?pc=` +
+    encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(kw)}/`) +
+    "&link_type=text";
+  const SHOP = {
+    kitchen: ["換気扇 つけ置き 洗剤", "換気扇 フィルター", "ゴム手袋"],
+    bath: ["カビ取り 浴室", "水垢 クエン酸 スプレー", "バスブラシ"],
+    toilet: ["トイレ 尿石 洗剤", "トイレブラシ"],
+    washroom: ["排水口 洗浄剤", "洗濯槽クリーナー"],
+    living: ["エアコン フィルター ブラシ", "ハンディモップ"],
+    bedroom: ["布団 圧縮袋", "衣類 収納ケース"],
+    window: ["窓 掃除 ワイパー", "サッシ ブラシ"],
+    entrance: ["靴箱 消臭", "ほうき ちりとり 玄関"],
+  };
   const SNS = [
     { name: "X", url: (q) => `https://x.com/search?q=${encodeURIComponent(q)}` },
     { name: "TikTok", url: (q) => `https://www.tiktok.com/search?q=${encodeURIComponent(q)}` },
@@ -320,7 +344,22 @@
         a.setAttribute("aria-label", `${s.name}で「${area.q}」を検索（新しいタブ）`);
         sns.append(a);
       });
-      tips.append(sm, tul, sns);
+      const shop = document.createElement("p");
+      shop.className = "shop";
+      const pr = document.createElement("span");
+      pr.className = "pr";
+      pr.textContent = "PR";
+      shop.append(pr, "使える道具を楽天市場で探す：");
+      (SHOP[area.id] || []).forEach((kw) => {
+        const a = document.createElement("a");
+        a.href = rakuten(kw);
+        a.target = "_blank";
+        a.rel = "nofollow sponsored noopener";
+        a.textContent = kw;
+        a.setAttribute("aria-label", `楽天市場で「${kw}」を検索（広告・新しいタブ）`);
+        shop.append(a);
+      });
+      tips.append(sm, tul, sns, shop);
 
       sec.append(head, bar, ul, form, tips);
       wrap.appendChild(sec);
