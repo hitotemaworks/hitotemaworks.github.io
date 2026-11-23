@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>大掃除チェックリスト｜場所別にやることと順番がわかる【無料・保存できる】</title>
-<meta name="description" content="キッチン・浴室・トイレなど8か所の大掃除リスト。チェックするだけで進み具合がわかり、ブラウザに保存されるので何日かに分けて使えます。印刷もOK。登録不要・無料。">
+<meta name="description" content="キッチン・浴室・トイレなど8か所の大掃除リスト。チェックするだけで進み具合がわかり、場所ごとの掃除のコツも見られます。ブラウザに保存されるので何日かに分けて使えます。印刷もOK。登録不要・無料。">
 <style>
   :root {
     --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
@@ -62,6 +62,12 @@
   }
   input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .note { color: var(--warn); font-size: .9rem; margin: 6px 0 0; }
+  details.tips { margin-top: 10px; border-top: 1px dashed var(--line); padding: 8px 0 0; }
+  details.tips summary { font-weight: 600; color: var(--accent); }
+  details.tips ul { margin: 8px 0 0; padding-left: 1.2em; }
+  details.tips li { color: var(--text); font-size: .93rem; margin-bottom: 6px; }
+  .sns { margin: 6px 0 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .sns a { color: var(--accent); }
   details { border-top: 1px solid var(--line); padding: 10px 0; }
   details:first-of-type { border-top: 0; }
   summary { cursor: pointer; font-weight: 600; }
@@ -75,7 +81,7 @@
   @media print {
     :root { --bg: #fff; --card: #fff; --text: #000; --muted: #333; --line: #bbb; }
     body { background: #fff; }
-    .toolbar, .add, .del, .faq, footer, .lead, .note { display: none !important; }
+    .toolbar, .add, .del, .faq, footer, .lead, .note, details.tips { display: none !important; }
     .total { position: static; }
     .card { break-inside: avoid; border-color: #bbb; }
     .hide-done ul.items li.done { display: flex; }
@@ -105,7 +111,7 @@
     <h2 id="faq-h">使い方・コツ</h2>
     <details open>
       <summary>使い方</summary>
-      <p>終わった項目にチェックを入れます。場所ごとと全体の進み具合が自動で変わります。自分の家に合わせて、各場所の下の欄から項目を追加でき、いらない項目は×で消せます。</p>
+      <p>終わった項目にチェックを入れます。場所ごとと全体の進み具合が自動で変わります。自分の家に合わせて、各場所の下の欄から項目を追加でき、いらない項目は×で消せます。各場所の「コツ」を開くと、掃除のコツと、X・TikTok・YouTube でその場所のコツを探すリンクが出ます。SNSで見つけた方法を試すときは、洗剤や家電の注意書きも確認してください。</p>
     </details>
     <details>
       <summary>効率のよい順番は？</summary>
@@ -132,28 +138,54 @@
 (() => {
   const KEY = "hitotema-oosouji-v1";
   const AREAS = [
-    { id: "kitchen", name: "キッチン", items: [
+    { id: "kitchen", name: "キッチン", q: "大掃除 キッチン 換気扇 コツ", items: [
       "換気扇・レンジフード", "吊り戸棚の中と扉", "コンロ・五徳", "電子レンジ・トースター",
-      "冷蔵庫の中を整理して拭く", "シンクと排水口", "床の油汚れ" ] },
-    { id: "bath", name: "浴室", items: [
+      "冷蔵庫の中を整理して拭く", "シンクと排水口", "床の油汚れ" ], tips: [
+      "油汚れは冷えると固まります。換気扇のフィルターや五徳は、お湯に食器用洗剤などを溶かしてしばらくつけ置きすると、こすらずに落としやすくなります。",
+      "冷蔵庫は、拭く前に期限切れの物を捨てて中身を減らすと早く終わります。",
+      "換気扇の分解は、電源を切り、取扱説明書の手順に沿って行いましょう。" ] },
+    { id: "bath", name: "浴室", q: "大掃除 お風呂 カビ 水垢 コツ", items: [
       "天井と換気扇", "壁・ドアのカビ", "鏡の水あか", "蛇口・シャワーヘッド",
-      "浴槽と風呂ふた", "排水口", "床と小物" ] },
-    { id: "toilet", name: "トイレ", items: [
-      "換気扇", "棚・タンクの上", "便座と便器のふち裏", "壁と床", "スリッパ・マットの洗濯" ] },
-    { id: "washroom", name: "洗面所", items: [
-      "照明・換気扇", "鏡と洗面台", "収納の整理", "洗濯機の外側と糸くずフィルター", "排水口と床" ] },
-    { id: "living", name: "リビング", items: [
+      "浴槽と風呂ふた", "排水口", "床と小物" ], tips: [
+      "鏡や蛇口の白い水あかは、酸性の洗剤やクエン酸が向いています。カビ取り剤（塩素系）と同じ日に使うときは、よく洗い流してから。",
+      "カビ取り剤は、水気を拭き取ってから使うと薄まりにくくなります。使っている間は換気を。",
+      "くもり止めなどのコーティングがある鏡は、研磨剤やメラミンスポンジで傷むことがあります。鏡の注意書きを確認しましょう。" ] },
+    { id: "toilet", name: "トイレ", q: "大掃除 トイレ 黄ばみ コツ", items: [
+      "換気扇", "棚・タンクの上", "便座と便器のふち裏", "壁と床", "スリッパ・マットの洗濯" ], tips: [
+      "換気扇 → 棚・タンク → 便器 → 床の順に、上から下へ進めると二度手間になりません。",
+      "便器のふちの黄ばみ（尿石）には、酸性タイプのトイレ用洗剤が向いています。塩素系の洗剤とは混ぜないでください。" ] },
+    { id: "washroom", name: "洗面所", q: "大掃除 洗面所 排水口 コツ", items: [
+      "照明・換気扇", "鏡と洗面台", "収納の整理", "洗濯機の外側と糸くずフィルター", "排水口と床" ], tips: [
+      "排水口は、先に髪の毛やごみを取り除いてから洗剤を使うと、洗剤がよく効きます。",
+      "洗濯機の糸くずフィルターや洗濯槽の掃除は、機種ごとの取扱説明書の方法に従いましょう。" ] },
+    { id: "living", name: "リビング", q: "大掃除 リビング エアコン フィルター コツ", items: [
       "照明・エアコンのフィルター", "カーテンの洗濯", "棚・テレビまわりのほこり", "ソファ・クッション",
-      "不要な物の仕分け", "床・ラグ" ] },
-    { id: "bedroom", name: "寝室・子ども部屋", items: [
-      "照明・エアコン", "クローゼットの整理", "寝具の洗濯・干す", "ベッドの下", "床" ] },
-    { id: "window", name: "窓・ベランダ", items: [
-      "窓ガラス（内・外）", "網戸", "サッシのレール", "ベランダの床と排水口", "物干し竿" ] },
-    { id: "entrance", name: "玄関", items: [
-      "照明", "靴箱の整理", "ドアの内外とドアノブ", "たたき（床）", "表札・インターホン" ] },
+      "不要な物の仕分け", "床・ラグ" ], tips: [
+      "エアコンのフィルターは、掃除機でほこりを吸ってから水洗いし、しっかり乾かしてから戻します。内部の分解は無理にしないで。",
+      "カーテンは洗濯表示を確認してから。洗えるものは、乾かすときにカーテンレールに吊るすとしわが伸びやすくなります。",
+      "高い所のほこりを先に落とし、床の掃除機がけは最後にします。" ] },
+    { id: "bedroom", name: "寝室・子ども部屋", q: "大掃除 クローゼット 片付け コツ", items: [
+      "照明・エアコン", "クローゼットの整理", "寝具の洗濯・干す", "ベッドの下", "床" ], tips: [
+      "クローゼットは「1年着なかった服」など、自分で基準を決めてから仕分けると迷いにくくなります。",
+      "寝具の洗濯・干す作業は、天気のよい日に先に始めておくと、ほかの場所を掃除している間に乾きます。" ] },
+    { id: "window", name: "窓・ベランダ", q: "大掃除 窓 網戸 サッシ コツ", items: [
+      "窓ガラス（内・外）", "網戸", "サッシのレール", "ベランダの床と排水口", "物干し竿" ], tips: [
+      "窓ふきは、日差しの強い時間を避けると洗剤や水がすぐ乾かず、拭き跡が残りにくくなります。",
+      "サッシのレールは、濡らす前に砂やほこりをブラシや掃除機で取ると、泥になりません。",
+      "ベランダの排水口は、落ち葉などのつまりを取っておくと雨の日に水があふれにくくなります。" ] },
+    { id: "entrance", name: "玄関", q: "大掃除 玄関 靴箱 コツ", items: [
+      "照明", "靴箱の整理", "ドアの内外とドアノブ", "たたき（床）", "表札・インターホン" ], tips: [
+      "玄関は家の掃除の最後に。ほかの部屋から出たほこりやごみをまとめて掃き出せます。",
+      "靴箱は中身を一度全部出し、扉を開けて乾かしてから戻すと湿気やにおいがこもりにくくなります。" ] },
+  ];
+  const SNS = [
+    { name: "X", url: (q) => `https://x.com/search?q=${encodeURIComponent(q)}` },
+    { name: "TikTok", url: (q) => `https://www.tiktok.com/search?q=${encodeURIComponent(q)}` },
+    { name: "YouTube", url: (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}` },
   ];
 
   const $ = (id) => document.getElementById(id);
+  const openTips = new Set();
   let storageOk = true;
   let state = { done: {}, removed: {}, custom: {}, hideDone: false, seq: 0 };
 
@@ -262,7 +294,35 @@
         save(); render(area.id);
       });
 
-      sec.append(head, bar, ul, form);
+      const tips = document.createElement("details");
+      tips.className = "tips";
+      tips.open = openTips.has(area.id);
+      tips.addEventListener("toggle", () => {
+        if (tips.open) openTips.add(area.id); else openTips.delete(area.id);
+      });
+      const sm = document.createElement("summary");
+      sm.textContent = `${area.name}のコツ`;
+      const tul = document.createElement("ul");
+      area.tips.forEach((t) => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        tul.appendChild(li);
+      });
+      const sns = document.createElement("p");
+      sns.className = "sns";
+      sns.append("SNSでもっと見る：");
+      SNS.forEach((s) => {
+        const a = document.createElement("a");
+        a.href = s.url(area.q);
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = s.name;
+        a.setAttribute("aria-label", `${s.name}で「${area.q}」を検索（新しいタブ）`);
+        sns.append(a);
+      });
+      tips.append(sm, tul, sns);
+
+      sec.append(head, bar, ul, form, tips);
       wrap.appendChild(sec);
       if (focusArea === area.id) input.focus();
     });
