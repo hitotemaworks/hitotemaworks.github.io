@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>年齢・干支・和暦 早見表｜生年月日から入学・卒業年もわかる【履歴書に】</title>
+<meta name="description" content="生年月日を入れると、今の年齢・干支・和暦と、小学校から大学までの入学・卒業の年月が一度にわかります。早生まれも自動で計算。生まれ年ごとの早見表つき。履歴書の学歴欄にも。登録不要・無料。">
+<link rel="canonical" href="https://hitotemaworks.github.io/nenrei-hayamihyo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ひとてまワークス">
+<meta property="og:title" content="年齢・干支・和暦 早見表｜生年月日から入学・卒業年もわかる">
+<meta property="og:description" content="生年月日を入れるだけで、年齢・干支・和暦と小学校〜大学の入学・卒業年月がわかる。早生まれも自動で計算。履歴書の学歴欄にも。">
+<meta property="og:url" content="https://hitotemaworks.github.io/nenrei-hayamihyo/">
+<meta property="og:image" content="https://hitotemaworks.github.io/og-image.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
+    --line: #dde1e8; --accent: #2f6fde; --accent-text: #ffffff;
+    --good: #1c7c4a; --hl: #eaf1fd; --input: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1d2128; --text: #e7eaf0; --muted: #a0a8b6;
+      --line: #333944; --accent: #6b9bf0; --accent-text: #0e1420;
+      --good: #5fc48d; --hl: #243149; --input: #262b33;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.4rem; margin: 8px 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 8px; }
+  .disclosure { color: var(--muted); font-size: .8rem; margin: 0 0 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  label.field span { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 4px; }
+  .dob { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+  select {
+    font: inherit; color: var(--text); background: var(--input); width: 100%;
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px;
+  }
+  select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    font: inherit; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); padding: 8px 12px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 4px 0 14px; }
+  .summary div { background: var(--hl); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .summary .k { display: block; font-size: .8rem; color: var(--muted); }
+  .summary .v { display: block; font-size: 1.15rem; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+  th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-size: .8rem; color: var(--muted); font-weight: 600; }
+  td small { color: var(--muted); }
+  .note { color: var(--muted); font-size: .85rem; margin: 10px 0 0; }
+  .actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  .copied { color: var(--good); font-size: .9rem; }
+  .table-wrap { max-height: 520px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; }
+  .table-wrap table { font-size: .9rem; }
+  .table-wrap thead th { position: sticky; top: 0; background: var(--card); }
+  tr.me td { background: var(--hl); font-weight: 700; }
+  tr.now td { color: var(--accent); }
+  .shop { margin: 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .shop a { color: var(--accent); }
+  .pr { font-size: .7rem; font-weight: 700; border: 1px solid var(--muted); color: var(--muted); border-radius: 4px; padding: 0 4px; line-height: 1.5; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin: 8px 0 0; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+  footer a { color: inherit; }
+  @media (max-width: 420px) {
+    .summary .v { font-size: 1rem; }
+    th, td { padding: 6px 4px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>年齢・干支・和暦 早見表</h1>
+  <p class="lead">生年月日を選ぶと、今の年齢・干支・和暦と、小学校から大学までの入学・卒業の年月がまとめてわかります。早生まれ（1月1日〜4月1日生まれ）も自動で計算します。</p>
+  <p class="disclosure">※このページには広告（楽天アフィリエイト）のリンクが含まれます。</p>
+
+  <section class="card" aria-labelledby="in-h">
+    <h2 id="in-h">生年月日</h2>
+    <div class="dob">
+      <label class="field"><span>年</span><select id="y" aria-label="生まれた年"></select></label>
+      <label class="field"><span>月</span><select id="m" aria-label="生まれた月"></select></label>
+      <label class="field"><span>日</span><select id="d" aria-label="生まれた日"></select></label>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="out-h" aria-live="polite">
+    <h2 id="out-h">結果 <small id="asof" style="font-weight:normal;color:var(--muted)"></small></h2>
+    <div class="summary">
+      <div><span class="k">年齢</span><span class="v" id="age"></span></div>
+      <div><span class="k">干支</span><span class="v" id="eto"></span></div>
+      <div><span class="k">和暦</span><span class="v" id="wareki"></span></div>
+    </div>
+    <table aria-label="入学・卒業の年月">
+      <thead><tr><th>学校</th><th>入学</th><th>卒業</th></tr></thead>
+      <tbody id="school"></tbody>
+    </table>
+    <p class="note">留年・浪人・飛び級がない場合の年月です。入学は4月、卒業は3月としています。</p>
+    <div class="actions">
+      <button type="button" class="primary" id="copy">結果をコピー</button>
+      <span class="copied" id="copied" hidden>コピーしました</span>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="tbl-h">
+    <h2 id="tbl-h">生まれ年の早見表 <small id="tbl-year" style="font-weight:normal;color:var(--muted)"></small></h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>西暦</th><th>和暦</th><th>干支</th><th>年齢</th></tr></thead>
+        <tbody id="table"></tbody>
+      </table>
+    </div>
+    <p class="note">年齢は、今年の誕生日を迎えた後の満年齢です。誕生日の前なら1つ引いてください。</p>
+  </section>
+
+  <section class="card" aria-label="関連する商品">
+    <p class="shop" id="shop"><span class="pr">PR</span>楽天市場で探す：</p>
+  </section>
+
+  <section class="card" aria-labelledby="faq-h">
+    <h2 id="faq-h">使い方・計算のきまり</h2>
+    <details open>
+      <summary>使い方</summary>
+      <p>生まれた年・月・日を選ぶだけです。年齢は開いた日の時点で計算します。「結果をコピー」で、履歴書の学歴欄に写しやすい形の文がコピーされます。</p>
+    </details>
+    <details>
+      <summary>早生まれはどう計算していますか？</summary>
+      <p>4月2日から翌年4月1日までに生まれた人が同じ学年です。1月1日〜4月1日生まれ（早生まれ）は、前の年の4月2日以降に生まれた人と同じ学年として計算します。4月1日生まれが早いほうの学年になるのは、法律上、誕生日の前日に年齢が1つ上がるとされているためです。</p>
+    </details>
+    <details>
+      <summary>元号が変わった年はどうなりますか？</summary>
+      <p>和暦は日付ごとに判定します。たとえば1989年1月7日までは昭和64年、1月8日からは平成元年、2019年4月30日までは平成31年、5月1日からは令和元年です。早見表では、元号が変わった年に両方を並べて書いています。</p>
+    </details>
+    <details>
+      <summary>干支はどう決まりますか？</summary>
+      <p>西暦の年を12で割った余りで決まる、十二支（子・丑・寅・卯・辰・巳・午・未・申・酉・戌・亥）を表示しています。年賀状などで使う「その年の干支」です。</p>
+    </details>
+    <details>
+      <summary>入力した生年月日は保存されますか？</summary>
+      <p>保存も送信もしません。計算はお使いのブラウザの中だけで行います。</p>
+    </details>
+  </section>
+
+  <footer><a href="../">ひとてまワークス</a> ・ 登録不要・無料</footer>
+</main>
+
+<script>
+(() => {
+  const ERAS = [ // [元号, 開始年, 月, 日]
+    ["令和", 2019, 5, 1], ["平成", 1989, 1, 8], ["昭和", 1926, 12, 25], ["大正", 1912, 7, 30], ["明治", 1868, 1, 1],
+  ];
+  const ETO = ["子（ね）", "丑（うし）", "寅（とら）", "卯（う）", "辰（たつ）", "巳（み）", "午（うま）", "未（ひつじ）", "申（さる）", "酉（とり）", "戌（いぬ）", "亥（い）"];
+  const ETO_SHORT = ETO.map((e) => e[0]);
+  const $ = (id) => document.getElementById(id);
+
+  const now = new Date();
+  const TY = now.getFullYear(), TM = now.getMonth() + 1, TD = now.getDate();
+  const MIN_YEAR = 1930;
+
+  const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
+  function eraOf(y, m, d) {
+    for (const [name, sy, sm, sd] of ERAS) {
+      if (cmp([y, m, d], [sy, sm, sd]) >= 0) {
+        const n = y - sy + 1;
+        return `${name}${n === 1 ? "元" : n}年`;
+      }
+    }
+    return "";
+  }
+  function eraOfYear(y) {
+    const a = eraOf(y, 1, 1), b = eraOf(y, 12, 31);
+    return a === b ? a : `${a}／${b}`;
+  }
+  const etoIndex = (y) => (((y - 4) % 12) + 12) % 12;
+  const daysIn = (y, m) => new Date(y, m, 0).getDate();
+  function age(y, m, d) {
+    return TY - y - ((TM < m || (TM === m && TD < d)) ? 1 : 0);
+  }
+  // 小学校に入学する年（4月）：4月2日〜12月31日生まれは +7、1月1日〜4月1日生まれは +6
+  const schoolStart = (y, m, d) => (m < 4 || (m === 4 && d === 1)) ? y + 6 : y + 7;
+
+  const SCHOOLS = [ // [名前, 入学までの年数（小学校入学から）, 在学年数]
+    ["小学校", 0, 6], ["中学校", 6, 3], ["高校", 9, 3], ["大学（4年）", 12, 4], ["短大・専門（2年）", 12, 2],
+  ];
+
+  function fill(sel, from, to, label, desc) {
+    sel.innerHTML = "";
+    const list = [];
+    for (let v = from; v <= to; v++) list.push(v);
+    if (desc) list.reverse();
+    for (const v of list) {
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = label(v);
+      sel.appendChild(o);
+    }
+  }
+
+  let lastText = "";
+  function render() {
+    const y = Number($("y").value), m = Number($("m").value);
+    const maxD = daysIn(y, m);
+    if ($("d").options.length !== maxD) {
+      const keep = Math.min(Number($("d").value) || 1, maxD);
+      fill($("d"), 1, maxD, (v) => `${v}日`);
+      $("d").value = keep;
+    }
+    const d = Number($("d").value);
+
+    $("asof").textContent = `（${TY}年${TM}月${TD}日時点）`;
+    const a = age(y, m, d);
+    $("age").textContent = a >= 0 ? `${a}歳` : "—";
+    $("eto").textContent = ETO[etoIndex(y)];
+    $("wareki").textContent = eraOf(y, m, d);
+
+    const fy = schoolStart(y, m, d);
+    const tb = $("school");
+    tb.innerHTML = "";
+    const lines = [`生年月日：${y}年${m}月${d}日（${eraOf(y, m, d)}${m}月${d}日）`];
+    for (const [name, off, len] of SCHOOLS) {
+      const iy = fy + off, gy = fy + off + len;
+      const tr = document.createElement("tr");
+      const inW = eraOf(iy, 4, 1), outW = eraOf(gy, 3, 31);
+      tr.innerHTML = `<td></td><td>${iy}年4月<br><small>${inW}4月</small></td><td>${gy}年3月<br><small>${outW}3月</small></td>`;
+      tr.firstChild.textContent = name;
+      tb.appendChild(tr);
+      lines.push(`${name}：${iy}年（${inW}）4月 入学 ／ ${gy}年（${outW}）3月 卒業`);
+    }
+    lastText = lines.join("\n");
+
+    document.querySelectorAll("#table tr").forEach((tr) => tr.classList.toggle("me", Number(tr.dataset.y) === y));
+  }
+
+  function buildTable() {
+    $("tbl-year").textContent = `（${TY}年版）`;
+    const tb = $("table");
+    for (let y = TY; y >= MIN_YEAR; y--) {
+      const tr = document.createElement("tr");
+      tr.dataset.y = y;
+      if (y === TY) tr.className = "now";
+      tr.innerHTML = `<td>${y}</td><td>${eraOfYear(y)}</td><td>${ETO_SHORT[etoIndex(y)]}</td><td>${TY - y}歳</td>`;
+      tb.appendChild(tr);
+    }
+  }
+
+  // 楽天アフィリエイト（検索結果行き）
+  const RAKUTEN_AFF_ID = "59e17ee6.acecc8a1.59e17ee7.58d95c3a";
+  const rakuten = (kw) =>
+    `https://hb.afl.rakuten.co.jp/ichiba/${RAKUTEN_AFF_ID}/?pc=` +
+    encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(kw)}/`) + "&link_type=text";
+  for (const kw of ["履歴書 用紙", "年賀状 印刷", "干支 置物"]) {
+    const a = document.createElement("a");
+    a.href = rakuten(kw);
+    a.target = "_blank";
+    a.rel = "nofollow sponsored noopener";
+    a.textContent = kw;
+    a.setAttribute("aria-label", `楽天市場で「${kw}」を検索（広告・新しいタブ）`);
+    $("shop").append(a);
+  }
+
+  async function copy() {
+    if (!lastText) return;
+    try { await navigator.clipboard.writeText(lastText); }
+    catch {
+      const ta = document.createElement("textarea");
+      ta.value = lastText; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+    $("copied").hidden = false;
+    setTimeout(() => { $("copied").hidden = true; }, 1500);
+  }
+
+  fill($("y"), MIN_YEAR, TY, (v) => `${v}年（${eraOfYear(v)}）`, true);
+  fill($("m"), 1, 12, (v) => `${v}月`);
+  fill($("d"), 1, 31, (v) => `${v}日`);
+  $("y").value = Math.max(MIN_YEAR, TY - 30);
+  $("m").value = 4; $("d").value = 2;
+  ["y", "m", "d"].forEach((id) => $(id).addEventListener("change", render));
+  $("copy").addEventListener("click", copy);
+  buildTable();
+  render();
+})();
+</script>
+</body>
+</html>
