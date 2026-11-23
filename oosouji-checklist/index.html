@@ -91,14 +91,17 @@
   details p, details li { color: var(--muted); }
   details p { margin: 8px 0 0; }
   details ul { margin: 8px 0 0; padding-left: 1.2em; }
-  .faq h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .faq h2, .related h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .related ul { margin: 0; padding-left: 1.2em; }
+  .related li { margin-bottom: 6px; color: var(--muted); font-size: .93rem; }
+  .related a { color: var(--accent); font-weight: 600; }
   footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
   footer a { color: inherit; }
 
   @media print {
     :root { --bg: #fff; --card: #fff; --text: #000; --muted: #333; --line: #bbb; }
     body { background: #fff; }
-    .toolbar, .add, .del, .faq, footer, .lead, .disclosure, .note, details.tips { display: none !important; }
+    .toolbar, .add, .del, .faq, .related, footer, .lead, .disclosure, .note, details.tips { display: none !important; }
     .total { position: static; }
     .card { break-inside: avoid; border-color: #bbb; }
     .hide-done ul.items li.done { display: flex; }
@@ -124,6 +127,14 @@
   </section>
 
   <div id="areas"></div>
+
+  <section class="card related" aria-labelledby="related-h">
+    <h2 id="related-h">あわせてどうぞ</h2>
+    <ul>
+      <li><a href="https://note.com/hitotemaworks/n/n92b365ae2c05" target="_blank" rel="noopener">大掃除は「4回」に分けると終わる｜週末ごとの進め方</a>（note・無料の記事）</li>
+      <li><a href="https://hitotemaworks.booth.pm/items/9209625" target="_blank" rel="noopener">印刷して使える 大掃除チェックリスト（A4・3枚）</a>（BOOTH・200円）… このページと同じ項目に「担当」「日付」の欄と週末4回の計画表をつけた印刷用 PDF です。</li>
+    </ul>
+  </section>
 
   <section class="card faq" aria-labelledby="faq-h">
     <h2 id="faq-h">使い方・コツ</h2>
