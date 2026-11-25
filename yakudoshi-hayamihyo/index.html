@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>厄年早見表・チェッカー｜生まれ年で前厄・本厄・後厄がわかる【数え年で自動計算】</title>
+<meta name="description" content="生まれ年と性別を選ぶと、数え年と、その年が前厄・本厄・後厄かどうか、これからの厄年の一覧がわかります。年ごとの男女別の厄年早見表つき。和暦・干支も表示。登録不要・無料。">
+<link rel="canonical" href="https://hitotemaworks.github.io/yakudoshi-hayamihyo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ひとてまワークス">
+<meta property="og:title" content="厄年早見表・チェッカー｜生まれ年で前厄・本厄・後厄がわかる">
+<meta property="og:description" content="生まれ年と性別を選ぶだけで、数え年と前厄・本厄・後厄、これからの厄年がわかる。男女別の早見表つき。">
+<meta property="og:url" content="https://hitotemaworks.github.io/yakudoshi-hayamihyo/">
+<meta property="og:image" content="https://hitotemaworks.github.io/og-image.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
+    --line: #dde1e8; --accent: #2f6fde; --accent-text: #ffffff;
+    --good: #1c7c4a; --hl: #eaf1fd; --input: #ffffff; --warn: #b4441c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1d2128; --text: #e7eaf0; --muted: #a0a8b6;
+      --line: #333944; --accent: #6b9bf0; --accent-text: #0e1420;
+      --good: #5fc48d; --hl: #243149; --input: #262b33; --warn: #f08a62;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.4rem; margin: 8px 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 8px; }
+  .disclosure { color: var(--muted); font-size: .8rem; margin: 0 0 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  h3 { font-size: .95rem; margin: 14px 0 6px; }
+  .inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  label.field span, .field-label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 4px; }
+  select {
+    font: inherit; color: var(--text); background: var(--input); width: 100%;
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px;
+  }
+  select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .sex { display: flex; gap: 14px; padding: 8px 0; }
+  .sex label, .opt { cursor: pointer; }
+  .opt { display: block; margin-top: 10px; font-size: .9rem; color: var(--muted); }
+  .summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 4px 0 10px; }
+  .summary div { background: var(--hl); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .summary .k { display: block; font-size: .8rem; color: var(--muted); }
+  .summary .v { display: block; font-size: 1.15rem; font-weight: 700; }
+  .summary .v.yaku { color: var(--warn); }
+  .msg { margin: 0 0 10px; }
+  .msg.err { color: var(--warn); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+  th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-size: .8rem; color: var(--muted); font-weight: 600; }
+  td small { color: var(--muted); }
+  tr.cur td { background: var(--hl); font-weight: 700; }
+  tr.past td { color: var(--muted); }
+  .note { color: var(--muted); font-size: .85rem; margin: 10px 0 0; }
+  .shop { margin: 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .shop a { color: var(--accent); }
+  .pr { font-size: .7rem; font-weight: 700; border: 1px solid var(--muted); color: var(--muted); border-radius: 4px; padding: 0 4px; line-height: 1.5; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin: 8px 0 0; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+  footer a { color: inherit; }
+  .related h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .related ul { margin: 0; padding-left: 1.2em; }
+  .related li { margin-bottom: 6px; color: var(--muted); font-size: .93rem; }
+  .related a { color: var(--accent); font-weight: 600; }
+  @media (max-width: 420px) {
+    .summary .v { font-size: 1rem; }
+    th, td { padding: 6px 4px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>厄年早見表・チェッカー</h1>
+  <p class="lead">生まれ年と性別を選ぶと、数え年と、その年が前厄・本厄・後厄にあたるかどうか、これからの厄年の一覧がわかります。下には、年ごとの男女別の厄年早見表もあります。</p>
+  <p class="disclosure">※このページには広告（楽天アフィリエイト）のリンクが含まれます。</p>
+
+  <section class="card" aria-labelledby="in-h">
+    <h2 id="in-h">生まれ年と性別</h2>
+    <div class="inputs">
+      <label class="field"><span>生まれ年</span><select id="y" aria-label="生まれ年"></select></label>
+      <label class="field"><span>調べる年</span><select id="t" aria-label="調べる年"></select></label>
+      <div>
+        <span class="field-label">性別</span>
+        <div class="sex" role="radiogroup" aria-label="性別">
+          <label><input type="radio" name="sex" id="male" value="m" checked> 男性</label>
+          <label><input type="radio" name="sex" id="female" value="f"> 女性</label>
+        </div>
+      </div>
+    </div>
+    <label class="opt"><input type="checkbox" id="f61"> 女性の61歳も厄年に含める（含める寺社と含めない寺社があります）</label>
+  </section>
+
+  <section class="card" aria-labelledby="out-h" aria-live="polite">
+    <h2 id="out-h">結果</h2>
+    <p class="msg" id="msg"></p>
+    <div class="summary" id="summary">
+      <div><span class="k">数え年</span><span class="v" id="kazoe"></span></div>
+      <div><span class="k">判定</span><span class="v" id="judge"></span></div>
+    </div>
+    <p class="note" id="next"></p>
+    <h3>あなたの厄年の一覧</h3>
+    <table aria-label="厄年の一覧">
+      <thead><tr><th>厄年（数え）</th><th>前厄</th><th>本厄</th><th>後厄</th></tr></thead>
+      <tbody id="mine"></tbody>
+    </table>
+    <p class="note">数え年は「生まれた年を1歳とし、元日ごとに1つ足す」数え方です（調べる年 − 生まれ年 + 1）。誕生日の前後は関係ありません。</p>
+  </section>
+
+  <section class="card" aria-labelledby="tbl-h">
+    <h2 id="tbl-h">厄年早見表 <small id="tbl-year" style="font-weight:normal;color:var(--muted)"></small></h2>
+    <h3>男性</h3>
+    <table aria-label="男性の厄年早見表">
+      <thead><tr><th>区分</th><th>数え</th><th>生まれ年</th></tr></thead>
+      <tbody id="tbl-m"></tbody>
+    </table>
+    <h3>女性</h3>
+    <table aria-label="女性の厄年早見表">
+      <thead><tr><th>区分</th><th>数え</th><th>生まれ年</th></tr></thead>
+      <tbody id="tbl-f"></tbody>
+    </table>
+    <p class="note">「調べる年」を変えると、早見表もその年のものに変わります。大厄は男性42歳・女性33歳です。</p>
+  </section>
+
+  <section class="card related" aria-labelledby="related-h">
+    <h2 id="related-h">あわせてどうぞ</h2>
+    <ul>
+      <li><a href="../nenrei-hayamihyo/">年齢・干支・和暦 早見表</a> … 生年月日から満年齢・干支・和暦と、入学・卒業の年月がわかります。</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-label="関連する商品">
+    <p class="shop" id="shop"><span class="pr">PR</span>楽天市場で探す：</p>
+  </section>
+
+  <section class="card" aria-labelledby="faq-h">
+    <h2 id="faq-h">使い方・計算のきまり</h2>
+    <details open>
+      <summary>使い方</summary>
+      <p>生まれ年・調べる年・性別を選ぶだけです。結果に、その年の数え年と、前厄・本厄・後厄のどれにあたるか（あたらなければ「厄年ではない」）が出ます。「あなたの厄年の一覧」では、一生のうちの厄年を西暦で確かめられます。</p>
+    </details>
+    <details>
+      <summary>厄年は何歳ですか？</summary>
+      <p>一般に、数え年で男性は25歳・42歳・61歳、女性は19歳・33歳・37歳とされます。男性の42歳と女性の33歳は「大厄」と呼ばれます。本厄の前の年を前厄、後の年を後厄といいます。女性の61歳も厄年とする寺社があるため、チェックを入れると含めて計算します。</p>
+    </details>
+    <details>
+      <summary>数え年と満年齢はどう違いますか？</summary>
+      <p>満年齢は誕生日ごとに1つ増えますが、数え年は生まれた年を1歳とし、元日（1月1日）ごとに1つ増えます。そのため数え年は、その年の誕生日の後なら満年齢＋1、誕生日の前なら満年齢＋2になります。</p>
+    </details>
+    <details>
+      <summary>年の区切りは元日ですか？</summary>
+      <p>このページは元日（1月1日）で年が変わるものとして計算しています。寺社によっては立春（2月4日ごろ）を年の区切りとし、1月1日〜節分に生まれた人を前の年の生まれとして数えることがあります。厄払い・厄除けを受ける場合は、参拝先の案内を確かめてください。</p>
+    </details>
+    <details>
+      <summary>厄年に根拠はありますか？</summary>
+      <p>厄年は昔からの風習で、科学的な根拠が示されているものではありません。このページは暦の上で何年が厄年にあたるかを調べるためのもので、運勢や健康を判断するものではありません。</p>
+    </details>
+    <details>
+      <summary>入力した内容は保存されますか？</summary>
+      <p>保存も送信もしません。計算はお使いのブラウザの中だけで行います。</p>
+    </details>
+  </section>
+
+  <footer><a href="../">ひとてまワークス</a> ・ 登録不要・無料</footer>
+</main>
+
+<script>
+(() => {
+  const ERAS = [ // [元号, 開始年, 月, 日]
+    ["令和", 2019, 5, 1], ["平成", 1989, 1, 8], ["昭和", 1926, 12, 25], ["大正", 1912, 7, 30], ["明治", 1868, 1, 1],
+  ];
+  const ETO = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+  const YAKU = { m: [25, 42, 61], f: [19, 33, 37] };
+  const TAIYAKU = { m: 42, f: 33 };
+  const $ = (id) => document.getElementById(id);
+
+  const now = new Date();
+  const TY = now.getFullYear(), TM = now.getMonth() + 1;
+  const MIN_YEAR = 1930;
+
+  const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
+  function eraOf(y, m, d) {
+    for (const [name, sy, sm, sd] of ERAS) {
+      if (cmp([y, m, d], [sy, sm, sd]) >= 0) {
+        const n = y - sy + 1;
+        return `${name}${n === 1 ? "元" : n}年`;
+      }
+    }
+    return "";
+  }
+  function eraOfYear(y) {
+    const a = eraOf(y, 1, 1), b = eraOf(y, 12, 31);
+    return a === b ? a : `${a}／${b}`;
+  }
+  const eto = (y) => ETO[(((y - 4) % 12) + 12) % 12];
+  const kazoe = (birth, year) => year - birth + 1;
+
+  function ages(sex) {
+    const list = YAKU[sex].slice();
+    if (sex === "f" && $("f61").checked) list.push(61);
+    return list;
+  }
+  // 数え年 k の判定：本厄・前厄・後厄・なし
+  function judge(sex, k) {
+    for (const a of ages(sex)) {
+      if (k === a) return a === TAIYAKU[sex] ? "本厄（大厄）" : "本厄";
+      if (k === a - 1) return "前厄";
+      if (k === a + 1) return "後厄";
+    }
+    return "";
+  }
+
+  function fill(sel, list, label) {
+    sel.innerHTML = "";
+    for (const v of list) {
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = label(v);
+      sel.appendChild(o);
+    }
+  }
+
+  const sex = () => ($("female").checked ? "f" : "m");
+
+  function render() {
+    const b = parseInt($("y").value, 10), t = parseInt($("t").value, 10), s = sex();
+    const mine = $("mine");
+    mine.innerHTML = "";
+    if (!Number.isFinite(b) || !Number.isFinite(t)) {
+      $("msg").textContent = "生まれ年と調べる年を選んでください。";
+      $("msg").className = "msg err";
+      $("summary").hidden = true; $("next").textContent = "";
+      renderTable(Number.isFinite(t) ? t : TY);
+      return;
+    }
+    if (b > t) {
+      $("msg").textContent = "生まれ年が調べる年より後になっています。選び直してください。";
+      $("msg").className = "msg err";
+      $("summary").hidden = true; $("next").textContent = "";
+      renderTable(t);
+      return;
+    }
+    $("summary").hidden = false;
+    const k = kazoe(b, t);
+    const j = judge(s, k);
+    $("msg").className = "msg";
+    $("msg").textContent = `${b}年（${eraOfYear(b)}・${eto(b)}年）生まれの${s === "m" ? "男性" : "女性"}の、${t}年（${eraOfYear(t)}）の厄年`;
+    $("kazoe").textContent = `${k}歳`;
+    $("judge").textContent = j || "厄年ではない";
+    $("judge").classList.toggle("yaku", !!j);
+
+    // 次の厄年（調べる年より後）
+    let next = "";
+    for (let y = t + 1; y <= b + 70; y++) {
+      const jj = judge(s, kazoe(b, y));
+      if (jj) { next = `次の厄年：${y}年（${eraOfYear(y)}）数え${kazoe(b, y)}歳の${jj}（あと${y - t}年）`; break; }
+    }
+    $("next").textContent = next || "これから先の厄年はありません。";
+
+    for (const a of ages(s)) {
+      const ys = [a - 1, a, a + 1].map((x) => b + x - 1);
+      const tr = document.createElement("tr");
+      if (ys.includes(t)) tr.className = "cur";
+      else if (ys[2] < t) tr.className = "past";
+      tr.innerHTML = `<td>${a}歳${a === TAIYAKU[s] ? "<br><small>大厄</small>" : ""}</td>` +
+        ys.map((y) => `<td>${y}年</td>`).join("");
+      mine.appendChild(tr);
+    }
+    renderTable(t);
+  }
+
+  function renderTable(t) {
+    $("tbl-year").textContent = `（${t}年・${eraOfYear(t)}）`;
+    for (const s of ["m", "f"]) {
+      const tb = $(`tbl-${s}`);
+      tb.innerHTML = "";
+      for (const a of ages(s)) {
+        for (const [kind, k] of [["前厄", a - 1], ["本厄", a], ["後厄", a + 1]]) {
+          const by = t - k + 1;
+          const tr = document.createElement("tr");
+          tr.dataset.birth = by;
+          tr.dataset.kind = kind;
+          tr.dataset.age = a;
+          if (kind === "本厄") tr.className = "cur";
+          const label = kind === "本厄" && a === TAIYAKU[s] ? "本厄（大厄）" : kind;
+          tr.innerHTML = `<td>${label}</td><td>${k}歳</td><td>${by}年<br><small>${eraOfYear(by)}・${eto(by)}</small></td>`;
+          tb.appendChild(tr);
+        }
+      }
+    }
+  }
+
+  // 楽天アフィリエイト（検索結果行き）
+  const RAKUTEN_AFF_ID = "59e17ee6.acecc8a1.59e17ee7.58d95c3a";
+  const rakuten = (kw) =>
+    `https://hb.afl.rakuten.co.jp/ichiba/${RAKUTEN_AFF_ID}/?pc=` +
+    encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(kw)}/`) + "&link_type=text";
+  for (const kw of ["厄除け グッズ", "うろこ柄 小物", "お守り袋"]) {
+    const a = document.createElement("a");
+    a.href = rakuten(kw);
+    a.target = "_blank";
+    a.rel = "nofollow sponsored noopener";
+    a.textContent = kw;
+    a.setAttribute("aria-label", `楽天市場で「${kw}」を検索（広告・新しいタブ）`);
+    $("shop").append(a);
+  }
+
+  const years = [];
+  for (let v = TY; v >= MIN_YEAR; v--) years.push(v);
+  fill($("y"), years, (v) => `${v}年（${eraOfYear(v)}・${eto(v)}）`);
+  fill($("t"), [TY, TY + 1, TY + 2, TY + 3], (v) => `${v}年（${eraOfYear(v)}）`);
+  const defT = TM >= 11 ? TY + 1 : TY;
+  $("t").value = defT;
+  $("y").value = Math.max(MIN_YEAR, defT - 41);
+  ["y", "t"].forEach((id) => $(id).addEventListener("change", render));
+  ["male", "female", "f61"].forEach((id) => $(id).addEventListener("change", render));
+  render();
+})();
+</script>
+</body>
+</html>
