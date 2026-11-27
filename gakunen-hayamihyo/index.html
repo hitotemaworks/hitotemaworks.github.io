@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学年早見表｜生年月日から学年・学年から生まれ年と年齢がわかる【早生まれ対応】</title>
+<meta name="description" content="年度を選ぶと、年少・年中・年長から小学校・中学校・高校・大学4年までの各学年の生まれた期間（4月2日〜翌年4月1日）と年齢が一覧でわかります。生年月日を入れれば、その年度の学年も自動で計算。和暦つき・登録不要・無料。">
+<link rel="canonical" href="https://hitotemaworks.github.io/gakunen-hayamihyo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ひとてまワークス">
+<meta property="og:title" content="学年早見表｜生年月日から学年・学年から生まれ年と年齢がわかる">
+<meta property="og:description" content="年少〜大学4年の各学年の生まれた期間と年齢を年度ごとに一覧に。生年月日からその年度の学年も出せます。早生まれ対応。">
+<meta property="og:url" content="https://hitotemaworks.github.io/gakunen-hayamihyo/">
+<meta property="og:image" content="https://hitotemaworks.github.io/og-image.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #5d6677;
+    --line: #dde1e8; --accent: #2f6fde; --accent-text: #ffffff;
+    --good: #1c7c4a; --hl: #eaf1fd; --input: #ffffff; --warn: #b4441c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c; --card: #1d2128; --text: #e7eaf0; --muted: #a0a8b6;
+      --line: #333944; --accent: #6b9bf0; --accent-text: #0e1420;
+      --good: #5fc48d; --hl: #243149; --input: #262b33; --warn: #f08a62;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.6;
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.4rem; margin: 8px 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 8px; }
+  .disclosure { color: var(--muted); font-size: .8rem; margin: 0 0 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  h3 { font-size: .95rem; margin: 14px 0 6px; }
+  .inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
+  label.field span { display: block; font-size: .9rem; color: var(--muted); margin-bottom: 4px; }
+  select {
+    font: inherit; color: var(--text); background: var(--input); width: 100%;
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 6px;
+  }
+  select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .fy { max-width: 260px; margin-bottom: 4px; }
+  .summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 4px 0 10px; }
+  .summary div { background: var(--hl); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .summary .k { display: block; font-size: .8rem; color: var(--muted); }
+  .summary .v { display: block; font-size: 1.15rem; font-weight: 700; }
+  .msg { margin: 0 0 10px; }
+  .msg.err { color: var(--warn); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+  th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-size: .8rem; color: var(--muted); font-weight: 600; }
+  td small { color: var(--muted); }
+  tr.cur td { background: var(--hl); font-weight: 700; }
+  tr.sep td { border-top: 2px solid var(--line); }
+  .note { color: var(--muted); font-size: .85rem; margin: 10px 0 0; }
+  .shop { margin: 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .shop a { color: var(--accent); }
+  .pr { font-size: .7rem; font-weight: 700; border: 1px solid var(--muted); color: var(--muted); border-radius: 4px; padding: 0 4px; line-height: 1.5; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin: 8px 0 0; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+  footer a { color: inherit; }
+  .related h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .related ul { margin: 0; padding-left: 1.2em; }
+  .related li { margin-bottom: 6px; color: var(--muted); font-size: .93rem; }
+  .related a { color: var(--accent); font-weight: 600; }
+  @media (max-width: 420px) {
+    .summary .v { font-size: 1rem; }
+    th, td { padding: 6px 4px; }
+    table { font-size: .88rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>学年早見表</h1>
+  <p class="lead">年度を選ぶと、年少・年中・年長から小学校・中学校・高校・大学4年までの各学年の「生まれた期間」と年齢が一覧でわかります。生年月日を入れれば、その年度に何年生かも計算します。</p>
+  <p class="disclosure">※このページには広告（楽天アフィリエイト）のリンクが含まれます。</p>
+
+  <section class="card" aria-labelledby="fy-h">
+    <h2 id="fy-h">年度</h2>
+    <label class="field fy"><span>調べる年度（4月〜翌年3月）</span><select id="fy" aria-label="調べる年度"></select></label>
+  </section>
+
+  <section class="card" aria-labelledby="in-h">
+    <h2 id="in-h">生年月日から学年を調べる</h2>
+    <div class="inputs">
+      <label class="field"><span>生まれた年</span><select id="by" aria-label="生まれた年"></select></label>
+      <label class="field"><span>月</span><select id="bm" aria-label="生まれた月"></select></label>
+      <label class="field"><span>日</span><select id="bd" aria-label="生まれた日"></select></label>
+    </div>
+    <div aria-live="polite">
+      <p class="msg" id="msg" style="margin-top:12px"></p>
+      <div class="summary" id="summary">
+        <div><span class="k">学年</span><span class="v" id="grade"></span></div>
+        <div><span class="k">年度中の年齢</span><span class="v" id="age"></span></div>
+      </div>
+      <p class="note" id="range"></p>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="tbl-h">
+    <h2 id="tbl-h">学年早見表 <small id="tbl-year" style="font-weight:normal;color:var(--muted)"></small></h2>
+    <table aria-label="学年早見表">
+      <thead><tr><th>学年</th><th>生まれた期間</th><th>年齢</th></tr></thead>
+      <tbody id="tbl"></tbody>
+    </table>
+    <p class="note">年齢は、その年度の4月1日時点 → 年度中の誕生日を過ぎた後の満年齢です。中学校より上は、留年・浪人・飛び級をせずに進んだ場合です。</p>
+  </section>
+
+  <section class="card related" aria-labelledby="related-h">
+    <h2 id="related-h">あわせてどうぞ</h2>
+    <ul>
+      <li><a href="../nenrei-hayamihyo/">年齢・干支・和暦 早見表</a> … 生年月日から満年齢・干支・和暦と、入学・卒業の年月（履歴書の学歴欄）がわかります。</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-label="関連する商品">
+    <p class="shop" id="shop"><span class="pr">PR</span>楽天市場で探す：</p>
+  </section>
+
+  <section class="card" aria-labelledby="faq-h">
+    <h2 id="faq-h">使い方・計算のきまり</h2>
+    <details open>
+      <summary>使い方</summary>
+      <p>まず「調べる年度」を選びます（初期値は今年度）。早見表に、その年度の各学年の生まれた期間と年齢が出ます。生年月日を選ぶと、その人がその年度に何年生か、年度中に何歳か、同じ学年になる生まれた期間がわかります。来年度の入学・進級を調べるときは、年度を1つ先にしてください。</p>
+    </details>
+    <details>
+      <summary>同じ学年になるのは何月何日から何月何日生まれですか？</summary>
+      <p>4月2日から翌年の4月1日までに生まれた人が同じ学年です。1月1日〜4月1日生まれを「早生まれ」といい、前の年の4月2日以降に生まれた人と同じ学年になります。</p>
+    </details>
+    <details>
+      <summary>4月1日生まれはなぜ1つ上の学年になるのですか？</summary>
+      <p>法律では、誕生日の前の日が終わる時点で1つ年をとると数えます。4月1日生まれの人は3月31日の終わりに満6歳になるため、その翌日の4月1日に始まる学年から小学校に入学します。そのため4月2日以降に生まれた人より1学年上になります（文部科学省「4月1日生まれの児童生徒の学年について」）。</p>
+    </details>
+    <details>
+      <summary>小学1年生は何歳ですか？</summary>
+      <p>満6歳になった後の最初の4月に小学校に入学するので、小学1年生は4月の時点で6歳、年度中の誕生日を過ぎると7歳です。同じように、中学1年生は12〜13歳、高校1年生は15〜16歳です。</p>
+    </details>
+    <details>
+      <summary>年少・年中・年長はどう決めていますか？</summary>
+      <p>幼稚園・保育園で広く使われている呼び方（3年保育）にしています。年長は小学校に入る前の年度で5〜6歳、年中は4〜5歳、年少は3〜4歳です。法律で決まった名前ではなく、園によって呼び方や受け入れの年齢が違うことがあります。</p>
+    </details>
+    <details>
+      <summary>入力した内容は保存されますか？</summary>
+      <p>保存も送信もしません。計算はお使いのブラウザの中だけで行います。</p>
+    </details>
+  </section>
+
+  <footer><a href="../">ひとてまワークス</a> ・ 登録不要・無料</footer>
+</main>
+
+<script>
+(() => {
+  const ERAS = [ // [元号, 開始年, 月, 日]
+    ["令和", 2019, 5, 1], ["平成", 1989, 1, 8], ["昭和", 1926, 12, 25], ["大正", 1912, 7, 30], ["明治", 1868, 1, 1],
+  ];
+  // k：小学1年生を1とした学年の番号
+  const GRADES = [
+    ["年少", -2], ["年中", -1], ["年長", 0],
+    ["小学1年生", 1], ["小学2年生", 2], ["小学3年生", 3], ["小学4年生", 4], ["小学5年生", 5], ["小学6年生", 6],
+    ["中学1年生", 7], ["中学2年生", 8], ["中学3年生", 9],
+    ["高校1年生", 10], ["高校2年生", 11], ["高校3年生", 12],
+    ["大学1年生", 13], ["大学2年生", 14], ["大学3年生", 15], ["大学4年生", 16],
+  ];
+  const $ = (id) => document.getElementById(id);
+
+  const now = new Date();
+  const TY = now.getFullYear(), TM = now.getMonth() + 1;
+  const CUR_FY = TM >= 4 ? TY : TY - 1;
+  const MIN_YEAR = 1960;
+
+  const cmp = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
+  function eraOf(y, m, d) {
+    for (const [name, sy, sm, sd] of ERAS) {
+      if (cmp([y, m, d], [sy, sm, sd]) >= 0) {
+        const n = y - sy + 1;
+        return `${name}${n === 1 ? "元" : n}年`;
+      }
+    }
+    return "";
+  }
+  // 学年の起点の年：4月2日〜翌年4月1日生まれを、始まりの年 c で表す
+  const cohort = (y, m, d) => (m > 4 || (m === 4 && d >= 2) ? y : y - 1);
+  const gradeK = (fy, c) => fy - c - 6;
+  const startAge = (k) => 5 + k; // その年度の4月1日時点の満年齢
+  const gradeName = (k) => {
+    const g = GRADES.find((x) => x[1] === k);
+    if (g) return g[0];
+    return k < -2 ? "未就学（年少より前）" : "大学4年生より上";
+  };
+  const ageText = (k) => {
+    const s = startAge(k);
+    return s < 0 ? "0歳" : `${s}〜${s + 1}歳`;
+  };
+  const isValidDate = (y, m, d) => {
+    const dt = new Date(y, m - 1, d);
+    return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d;
+  };
+
+  function fill(sel, list, label) {
+    sel.innerHTML = "";
+    for (const v of list) {
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = label(v);
+      sel.appendChild(o);
+    }
+  }
+
+  function renderTable(fy) {
+    $("tbl-year").textContent = `（${fy}年度・${eraOf(fy, 4, 1)}度）`;
+    const tb = $("tbl");
+    tb.innerHTML = "";
+    for (const [name, k] of GRADES) {
+      const c = fy - 6 - k;
+      const tr = document.createElement("tr");
+      tr.dataset.k = k;
+      tr.dataset.from = `${c}-04-02`;
+      tr.dataset.to = `${c + 1}-04-01`;
+      if (k === 1 || k === 7 || k === 10 || k === 13) tr.className = "sep";
+      tr.innerHTML = `<td>${name}</td>` +
+        `<td>${c}年4月2日〜${c + 1}年4月1日<br><small>${eraOf(c, 4, 2)}〜${eraOf(c + 1, 4, 1)}</small></td>` +
+        `<td>${ageText(k)}</td>`;
+      tb.appendChild(tr);
+    }
+  }
+
+  function render() {
+    const fy = parseInt($("fy").value, 10);
+    const y = parseInt($("by").value, 10), m = parseInt($("bm").value, 10), d = parseInt($("bd").value, 10);
+    renderTable(Number.isFinite(fy) ? fy : CUR_FY);
+    const err = (t) => {
+      $("msg").textContent = t;
+      $("msg").className = "msg err";
+      $("summary").hidden = true;
+      $("range").textContent = "";
+      for (const tr of $("tbl").children) tr.classList.remove("cur");
+    };
+    if (![fy, y, m, d].every(Number.isFinite)) return err("年度と生年月日を選んでください。");
+    if (!isValidDate(y, m, d)) return err(`${y}年${m}月${d}日という日付はありません。選び直してください。`);
+    if (cmp([y, m, d], [fy + 1, 3, 31]) > 0) return err(`${fy}年度（${fy + 1}年3月31日まで）には、まだ生まれていない日付です。年度を選び直してください。`);
+
+    const c = cohort(y, m, d);
+    const k = gradeK(fy, c);
+    $("summary").hidden = false;
+    $("msg").className = "msg";
+    $("msg").textContent = `${y}年${m}月${d}日（${eraOf(y, m, d)}）生まれの、${fy}年度の学年${c !== y ? "（早生まれ）" : ""}`;
+    $("grade").textContent = gradeName(k);
+    $("age").textContent = ageText(k);
+    $("range").textContent = `同じ学年：${c}年4月2日〜${c + 1}年4月1日生まれ ／ 小学校入学：${c + 7}年4月 ／ 中学校入学：${c + 13}年4月 ／ 高校入学：${c + 16}年4月`;
+    for (const tr of $("tbl").children) tr.classList.toggle("cur", Number(tr.dataset.k) === k);
+  }
+
+  // 楽天アフィリエイト（検索結果行き）
+  const RAKUTEN_AFF_ID = "59e17ee6.acecc8a1.59e17ee7.58d95c3a";
+  const rakuten = (kw) =>
+    `https://hb.afl.rakuten.co.jp/ichiba/${RAKUTEN_AFF_ID}/?pc=` +
+    encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(kw)}/`) + "&link_type=text";
+  for (const kw of ["入学準備 グッズ", "お名前シール", "学習机"]) {
+    const a = document.createElement("a");
+    a.href = rakuten(kw);
+    a.target = "_blank";
+    a.rel = "nofollow sponsored noopener";
+    a.textContent = kw;
+    a.setAttribute("aria-label", `楽天市場で「${kw}」を検索（広告・新しいタブ）`);
+    $("shop").append(a);
+  }
+
+  fill($("fy"), [CUR_FY - 1, CUR_FY, CUR_FY + 1, CUR_FY + 2], (v) => `${v}年度（${eraOf(v, 4, 1)}度）${v === CUR_FY ? "・今年度" : ""}`);
+  $("fy").value = CUR_FY;
+  const years = [];
+  for (let v = CUR_FY + 2; v >= MIN_YEAR; v--) years.push(v);
+  fill($("by"), years, (v) => `${v}年（${eraOf(v, 12, 31)}）`);
+  fill($("bm"), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], (v) => `${v}月`);
+  const days = [];
+  for (let v = 1; v <= 31; v++) days.push(v);
+  fill($("bd"), days, (v) => `${v}日`);
+  $("by").value = CUR_FY - 10;
+  $("bm").value = 5;
+  $("bd").value = 1;
+  ["fy", "by", "bm", "bd"].forEach((id) => $(id).addEventListener("change", render));
+  render();
+})();
+</script>
+</body>
+</html>
