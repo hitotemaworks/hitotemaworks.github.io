@@ -91,7 +91,11 @@
   details p, details li { color: var(--muted); }
   details p { margin: 8px 0 0; }
   details ul { margin: 8px 0 0; padding-left: 1.2em; }
-  .faq h2, .related h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .faq h2, .related h2, .plan h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .plan p, .plan li { color: var(--muted); font-size: .93rem; }
+  .plan ul { margin: 0 0 8px; padding-left: 1.2em; }
+  .plan h3 { font-size: .98rem; margin: 12px 0 4px; }
+  .plan b { color: var(--text); }
   .related ul { margin: 0; padding-left: 1.2em; }
   .related li { margin-bottom: 6px; color: var(--muted); font-size: .93rem; }
   .related a { color: var(--accent); font-weight: 600; }
@@ -101,7 +105,7 @@
   @media print {
     :root { --bg: #fff; --card: #fff; --text: #000; --muted: #333; --line: #bbb; }
     body { background: #fff; }
-    .toolbar, .add, .del, .faq, .related, footer, .lead, .disclosure, .note, details.tips { display: none !important; }
+    .toolbar, .add, .del, .faq, .related, .plan, footer, .lead, .disclosure, .note, details.tips { display: none !important; }
     .total { position: static; }
     .card { break-inside: avoid; border-color: #bbb; }
     .hide-done ul.items li.done { display: flex; }
@@ -134,6 +138,20 @@
       <li><a href="https://note.com/hitotemaworks/n/n92b365ae2c05" target="_blank" rel="noopener">大掃除は「4回」に分けると終わる｜週末ごとの進め方</a>（note・無料の記事）</li>
       <li><a href="https://hitotemaworks.booth.pm/items/9209625" target="_blank" rel="noopener">印刷して使える 大掃除チェックリスト（A4・3枚）</a>（BOOTH・200円）… このページと同じ項目に「担当」「日付」の欄と週末4回の計画表をつけた印刷用 PDF です。</li>
     </ul>
+  </section>
+
+  <section class="card plan" aria-labelledby="plan-h">
+    <h2 id="plan-h">大掃除はいつから？日程の立て方</h2>
+    <p>年末ぎりぎりにまとめてやろうとすると、寒さと忙しさで終わらないことがよくあります。<b>12月の週末に分けて進める</b>のがおすすめです。昔から12月13日は「正月事始め」と呼ばれ、すす払い（大掃除）を始める日とされてきました。</p>
+    <h3>週末4回に分ける例</h3>
+    <ul>
+      <li><b>1回目</b>：不要な物の仕分け・クローゼット・寝具の洗濯（物を減らすと後が楽）</li>
+      <li><b>2回目</b>：窓・網戸・ベランダ（晴れて暖かい日に。水を使う外回りは早めに）</li>
+      <li><b>3回目</b>：キッチン・換気扇（油汚れはつけ置きの時間をとれる日に）</li>
+      <li><b>4回目</b>：浴室・トイレ・洗面所・玄関（最後に家の中から玄関へ掃き出す）</li>
+    </ul>
+    <h3>1日で終わらせたいときは</h3>
+    <p>場所を絞って、時間のかかるつけ置き（換気扇・五徳）を朝いちばんに始め、その間に窓や水回りを進めます。上の「チェック済みを隠す」をオンにすると、残りだけが見えて段取りしやすくなります。</p>
   </section>
 
   <section class="card faq" aria-labelledby="faq-h">

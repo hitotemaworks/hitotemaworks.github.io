@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>傾斜割り勘計算ツール｜飲み会の支払いを上司・後輩で調整【無料】</title>
-<meta name="description" content="合計金額と人数を入れるだけで、多め・普通・少なめの傾斜をつけた割り勘を100円単位で計算。幹事が足す額・余る額もすぐわかる。登録不要・無料。">
+<title>傾斜割り勘計算ツール｜忘年会・飲み会の支払いを上司・後輩で調整【無料】</title>
+<meta name="description" content="忘年会・飲み会の会費を、上司は多め・後輩や飲まない人は少なめの傾斜割り勘で計算。100円単位の丸めと、幹事が足す額・余る額もすぐわかる。登録不要・無料。">
 <link rel="canonical" href="https://hitotemaworks.github.io/warikan-keisha/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ひとてまワークス">
@@ -84,12 +84,22 @@
   .related ul { margin: 0; padding-left: 1.2em; }
   .related li { margin-bottom: 6px; color: var(--muted); font-size: .93rem; }
   .related a { color: var(--accent); font-weight: 600; }
+  .disclosure { color: var(--muted); font-size: .8rem; margin: -8px 0 16px; }
+  .guide p, .guide li { color: var(--muted); font-size: .93rem; }
+  .guide ul, .guide ol { margin: 0 0 8px; padding-left: 1.3em; }
+  .guide h3 { font-size: .98rem; margin: 14px 0 6px; }
+  .guide h3:first-of-type { margin-top: 0; }
+  .guide b { color: var(--text); }
+  .shop { font-size: .93rem; color: var(--muted); margin: 10px 0 0; }
+  .shop a { color: var(--accent); margin-right: 10px; display: inline-block; }
+  .pr { display: inline-block; font-size: .7rem; border: 1px solid var(--muted); border-radius: 4px; padding: 0 4px; margin-right: 6px; color: var(--muted); }
 </style>
 </head>
 <body>
 <main>
   <h1>傾斜割り勘計算ツール</h1>
-  <p class="lead">合計金額と人数を入れるだけで、「多め・普通・少なめ」の傾斜をつけた1人あたりの金額を計算します。端数の丸めと、幹事が足す額・余る額もわかります。</p>
+  <p class="lead">合計金額と人数を入れるだけで、「多め・普通・少なめ」の傾斜をつけた1人あたりの金額を計算します。端数の丸めと、幹事が足す額・余る額もわかります。忘年会・歓送迎会・飲み会の会費決めにどうぞ。</p>
+  <p class="disclosure">※このページには広告（楽天アフィリエイト）のリンクが含まれます。リンク先で購入されると、運営者に紹介料が支払われることがあります。</p>
 
   <section class="card" aria-labelledby="in-h">
     <h2 id="in-h">入力</h2>
@@ -133,6 +143,33 @@
     </div>
   </section>
 
+  <section class="card guide" aria-labelledby="guide-h">
+    <h2 id="guide-h">倍率の決め方と計算例</h2>
+    <h3>よく使われる倍率の例</h3>
+    <ul>
+      <li><b>上司・役職者</b>：1.3〜2倍（役職の差が大きいほど高め）</li>
+      <li><b>普通の参加者</b>：1倍（基準）</li>
+      <li><b>新人・学生・後輩</b>：0.5〜0.8倍</li>
+      <li><b>お酒を飲まない人</b>：0.7〜0.8倍</li>
+      <li><b>途中参加・途中で帰る人</b>：いた時間に合わせて0.5倍など</li>
+    </ul>
+    <p>決まりはありません。職場や仲間うちの習慣に合わせて、参加者が納得できる倍率にしてください。迷ったら差を小さめ（1.2倍・0.8倍など）にすると角が立ちにくくなります。</p>
+    <h3>均等と傾斜を比べると（合計30,000円・10人）</h3>
+    <ul>
+      <li><b>均等割り</b>：全員 3,000円</li>
+      <li><b>傾斜割り</b>（多め1.5倍×2人・普通×5人・少なめ0.7倍×3人、100円単位で切り上げ）：多め 4,500円・普通 3,000円・少なめ 2,100円。集まるのは 30,300円で、300円は幹事が預かります</li>
+    </ul>
+    <h3>幹事が先に決めておくこと</h3>
+    <ol>
+      <li>均等にするか、傾斜をつけるか</li>
+      <li>傾斜をつけるなら、誰が何倍か（事前に上の人に一言伝えておくと安心）</li>
+      <li>端数の扱い（切り上げて余りを預かるか、切り捨てて幹事が払うか）</li>
+      <li>二次会は別会計にするか</li>
+    </ol>
+    <p>決まったら「結果をコピー」で金額の一覧をコピーして、グループのチャットに貼れます。</p>
+    <p class="shop" id="shop"><span class="pr">PR</span>幹事の準備に（楽天市場で探す）：</p>
+  </section>
+
   <section class="card related" aria-labelledby="related-h">
     <h2 id="related-h">あわせてどうぞ</h2>
     <ul>
@@ -153,6 +190,14 @@
     <details>
       <summary>集めた額が合計とずれるのはなぜ？</summary>
       <p>100円単位などに丸めるためです。切り上げなら少し多く集まり、その分は幹事が預かるかお釣りにします。切り捨てなら少し足りず、その分を幹事が払います。差額は結果欄に出ます。</p>
+    </details>
+    <details>
+      <summary>お酒を飲まない人はどうすればいい？</summary>
+      <p>「少なめ」の区分に入れるか、「飲まない人」という区分を追加して0.7〜0.8倍くらいにするのがよくあるやり方です。料理だけの人と飲み放題の人で料金がはっきり違うコースなら、その差額を目安に倍率を決めてもかまいません。</p>
+    </details>
+    <details>
+      <summary>二次会や、立て替えた分はどうする？</summary>
+      <p>二次会は参加する人が変わるので、別々に計算するのがおすすめです。このページで合計金額と人数を入れ直せば、二次会の分もすぐ出せます。</p>
     </details>
     <details>
       <summary>入力した内容は保存されますか？</summary>
@@ -289,6 +334,22 @@
     const c = $("copied");
     c.hidden = false;
     setTimeout(() => { c.hidden = true; }, 1500);
+  }
+
+  // 楽天アフィリエイト（商品ページではなく楽天市場の検索結果へのリンク。売り切れでリンク切れにならない）
+  const RAKUTEN_AFF_ID = "59e17ee6.acecc8a1.59e17ee7.58d95c3a";
+  const rakuten = (kw) =>
+    `https://hb.afl.rakuten.co.jp/ichiba/${RAKUTEN_AFF_ID}/?pc=` +
+    encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(kw)}/`) +
+    "&link_type=text";
+  for (const kw of ["忘年会 景品", "ビンゴ 景品 セット", "集金袋"]) {
+    const a = document.createElement("a");
+    a.href = rakuten(kw);
+    a.target = "_blank";
+    a.rel = "nofollow sponsored noopener";
+    a.textContent = kw;
+    a.setAttribute("aria-label", `楽天市場で「${kw}」を検索（広告・新しいタブ）`);
+    $("shop").append(a);
   }
 
   document.addEventListener("input", calc);
